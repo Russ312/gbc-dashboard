@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Orders Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2>Orders Dashboard</h2>
+
+<canvas id="chart" width="600" height="300"></canvas>
+
+<script>
+const SUPABASE_URL = "https://wnxrtuumokuftcljvkht.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndueHJ0dXVtb2t1ZnRjbGp2a2h0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyODU4OTUsImV4cCI6MjA5MTg2MTg5NX0.7PD6ArULXu6iFQrfV0XKG8iB-DYAaRsa8ylTawuzkNc";
+
+fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+  headers: {
+    "apikey": SUPABASE_KEY,
+    "Authorization": "Bearer " + SUPABASE_KEY
+  }
+})
+.then(res => res.json())
+.then(data => {
+  const labels = data.map((_, i) => i);
+  const totals = data.map(o => o.total);
+
+  new Chart(document.getElementById("chart"), {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Order Total",
+        data: totals
+      }]
+    }
+  });
+});
+</script>
+
+</body>
+</html>
